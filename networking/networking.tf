@@ -21,7 +21,7 @@ resource "aws_subnet" "k3_public_subnet" {
   vpc_id                  = aws_vpc.k3_vpc.id
   cidr_block              = var.public_cidr[count.index]
   map_public_ip_on_launch = true
-  availability_zone       = ["eu-west-2a", "eu-west-2b", "eu-west-2c"][count.index]
+  availability_zone       = data.aws_availablity_zones.az.name[count.index]
 
   tags = {
     "company" : "k3_public_subnet_${count.index + 1}"
@@ -35,7 +35,7 @@ resource "aws_subnet" "k3_public_subnet" {
   vpc_id                  = aws_vpc.k3_vpc.id
   cidr_block              = var.public_cidr[count.index]
   map_public_ip_on_launch = true
-  availability_zone       = ["eu-west-2a", "eu-west-2b", "eu-west-2c"][count.index]
+  availability_zone       = data.aws_availablity_zones.az.name[count.index]
 
   tags = {
     "company" : "k3_public_subnet_${count.index + 1}"
