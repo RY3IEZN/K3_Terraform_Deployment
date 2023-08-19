@@ -20,3 +20,13 @@ variable "public_cidr" {
   default     = ""
   description = "private cidr"
 }
+
+# access ip
+variable "access_ip" {
+  type        = string
+  default     = ""
+  description = "description"
+}
+
+# security group
+variable "security_groups" {}

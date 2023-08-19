@@ -1,4 +1,3 @@
-
 resource "resource random_integer" "random" {
   min = 1
   max = 50
@@ -12,6 +11,9 @@ resource "aws_vpc" "k3_vpc" {
 
   tags = {
     "company" : "k3_vpc-${random_integer.random.id}"
+  }
+  lifecycle {
+    create_before_destroy = true
   }
 }
 
@@ -55,3 +57,41 @@ resource "aws_subnet" "k3_private_subnet" {
   }
 
 }
+
+# create a internet gateway
+resource "aws_internet_gateway" "k3_igw" {
+  vpc_id = aws_vpc.k3_vpc.id
+
+  tags = {
+    company = "k3_igw"
+  }
+}
+
+# create public route table
+resource "aws_route_table" "k3_pubic_route_table" {
+  vpc_id = aws_vpc.k3_vpc.id
+
+  tags = {
+    company = "k3_pubic_route_table"
+  }
+}
+
+#create default route 
+resource "aws_route" "default_route" {
+  route_table_id         = aws_route_table.k3_pubic_route_table.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id             = aws_internet_gateway.k3_igw.id
+}
+
+#create default route table
+resource "aws_default_route_table" "k3_private_route_table" {
+  default_route_table_id = aws_vpc.k3_vpc.default_route_table_id
+}
+
+# create route table association for public subnert
+resource "aws_route_table_association" "k3_public_subnet_assoc" {
+  subnet_id      = aws_subnet.k3_public_subnet.*.id[count.index]
+  route_table_id = aws_route_table.k3_pubic_route_table.id
+
+}
+
