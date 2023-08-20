@@ -10,7 +10,7 @@ resource "aws_vpc" "k3_vpc" {
   enable_dns_support   = true
 
   tags = {
-    "company" : "k3_vpc-${random_integer.random.id}"
+    company : "k3_vpc-${random_integer.random.id}"
   }
   lifecycle {
     create_before_destroy = true
@@ -26,7 +26,7 @@ resource "aws_subnet" "k3_public_subnet" {
   availability_zone       = data.aws_availablity_zones.az.name[count.index]
 
   tags = {
-    "company" : "k3_public_subnet_${count.index + 1}"
+    company : "k3_public_subnet_${count.index + 1}"
   }
 
 }
@@ -40,7 +40,7 @@ resource "aws_subnet" "k3_public_subnet" {
   availability_zone       = data.aws_availablity_zones.az.name[count.index]
 
   tags = {
-    "company" : "k3_public_subnet_${count.index + 1}"
+    company : "k3_public_subnet_${count.index + 1}"
   }
 
 }
@@ -53,7 +53,7 @@ resource "aws_subnet" "k3_private_subnet" {
   availability_zone = ["eu-west-2a", "eu-west-2b", "eu-west-2c"][count.index]
 
   tags = {
-    "company" : "k3_private_subnet_${count.index + 1}"
+    company : "k3_private_subnet_${count.index + 1}"
   }
 
 }
@@ -95,3 +95,12 @@ resource "aws_route_table_association" "k3_public_subnet_assoc" {
 
 }
 
+# create the rds subnet
+resource "aws_db_subnet_group" "k3_rds_subnet_group" {
+  name       = k3_rds_subnet_group
+  subnet_ids = aws_subnet.k3_private_subnet.*.id
+
+  tags = {
+    company = "k3_rds_subnet_group"
+  }
+}
