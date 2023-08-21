@@ -22,6 +22,27 @@ module "database" {
   skip_final_snapshot     = true
   db_subnet_group_name    = module.networking.db_subnet_group_name[0]
   vpc_security_groups_ids = module.networking.db_security_group
+}
 
+module "loadbalancer" {
+  source        = "./loadbalancer"
+  public_sg     = module.networking.public_sg
+  public_subnet = module.networking.public_subnet
+  port          = 80
+  protocol      = "HTTP"
+  vpc_id        = module.networking.vpc_id
 
+}
+
+module "compute" {
+  source          = "./compute"
+  public_sg       = module.networking.public_sg
+  public_subnet   = module.networking.public_subnet
+  volume_size     = 30
+  public_key_path = "~/.ssh/k3key.pub"
+  user_data_path  = "./userdata.tpl"
+  dbname          = var.db_name
+  dbuser          = var.username
+  dbpass          = var.password
+  db_endpoint     = module.database.db_endpoint
 }

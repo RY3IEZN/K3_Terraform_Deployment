@@ -1,5 +1,5 @@
 # create rds instance
-resource "aws_db_instance" "default" {
+resource "aws_db_instance" "k3_db" {
   allocated_storage       = var.allocated_storage
   engine                  = var.engine
   engine_version          = var.engine_version
@@ -13,6 +13,6 @@ resource "aws_db_instance" "default" {
   skip_final_snapshot     = var.skip_final_snapshot
 
   tags = {
-    company = "k3_mysql_db"
+    company = "k3_db"
   }
 }

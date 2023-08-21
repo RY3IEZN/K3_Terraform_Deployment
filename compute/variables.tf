@@ -1,0 +1,9 @@
+variable "public_sg" {}
+variable "public_subnet" {}
+variable "volume_size" {}
+variable "public_key_path" {}
+variable "user_data_path" {}
+variable "dbname" {}
+variable "dbuser" {}
+variable "dbpass" {}
+variable "db_endpoint" {}

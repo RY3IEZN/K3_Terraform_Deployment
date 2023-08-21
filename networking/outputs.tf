@@ -11,5 +11,17 @@ output "db_subnet_group_name" {
 }
 
 output "db_security_group" {
-  value = [aws_security_group.k3_sg["rds"].id]
+  value = aws_security_group.k3_sg["rds"].id
+}
+
+output "public_sg" {
+  value = aws_security_group.k3_sg["public"].id
+}
+
+output "public_subnet" {
+  value = aws_subnet.k3_public_subnet.*.id
+}
+
+output "vpc_id" {
+  value = aws_vpc.k3_vpc.id
 }

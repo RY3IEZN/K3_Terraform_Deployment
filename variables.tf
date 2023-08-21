@@ -13,13 +13,9 @@ variable "db_name" {
 }
 variable "username" {
   type        = string
-  default     = ""
-  description = "description"
   sensitive   = true
 }
 variable "password" {
   type        = string
-  default     = ""
-  description = "description"
   sensitive   = true
 }

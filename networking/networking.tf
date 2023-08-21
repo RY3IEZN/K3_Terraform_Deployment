@@ -1,4 +1,4 @@
-resource "resource random_integer" "random" {
+resource "random_integer" "random" {
   min = 1
   max = 50
 }
@@ -31,19 +31,6 @@ resource "aws_subnet" "k3_public_subnet" {
 
 }
 
-# create a public subnet
-resource "aws_subnet" "k3_public_subnet" {
-  count                   = length(var.public_cidr)
-  vpc_id                  = aws_vpc.k3_vpc.id
-  cidr_block              = var.public_cidr[count.index]
-  map_public_ip_on_launch = true
-  availability_zone       = data.aws_availablity_zones.az.name[count.index]
-
-  tags = {
-    company : "k3_public_subnet_${count.index + 1}"
-  }
-
-}
 
 # create a private subnet
 resource "aws_subnet" "k3_private_subnet" {
