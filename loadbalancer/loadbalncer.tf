@@ -35,3 +35,5 @@ resource "aws_lb_listner" "k3_alb_listner" {
   default_actipn    = "forward"
   target_group_arn  = aws_lb_target_group.k3_alb_tg.arn
 }
+
+
